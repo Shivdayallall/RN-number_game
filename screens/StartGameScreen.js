@@ -1,20 +1,63 @@
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View, Alert } from 'react-native';
 import PrimaryButton from '../components/PrimaryButton';
 
+import { useState } from 'react';
+
 const StartGameScreen = () => {
+  // Declare the state for textinput field
+  const [enteredNumber, setEnteredNumber] = useState('');
+
+  // Update the textinput field to display the value the user enters
+  const numberInputHandler = (enteredText) => {
+    // update the state with the numbered entered
+    setEnteredNumber(enteredText);
+  };
+
+  // Reset the textinput field for invalid number, when the alert pops up.
+  const resetInvalidInputHandler = () => {
+    setEnteredNumber('');
+  };
+
+  // Validate the number enter is greater than 0
+  const confirmInputHandler = () => {
+    const userChosenNumber = parseInt(enteredNumber);
+
+    if (
+      isNaN(userChosenNumber) ||
+      userChosenNumber <= 0 ||
+      userChosenNumber > 99
+    ) {
+      Alert.alert('Invalid number!', 'Number must be between 1 and 99.', [
+        {
+          text: 'Okay',
+          style: 'destructive',
+          onPress: resetInvalidInputHandler,
+        },
+      ]);
+      return;
+    }
+
+    console.log('valid number');
+  };
+
   return (
     <View style={styles.inputContainer}>
       <TextInput
         style={styles.numberInput}
         maxLength={2}
         keyboardType='number-pad'
+        value={enteredNumber}
+        onChangeText={numberInputHandler}
       />
       <View style={styles.buttonsContainer}>
         <View style={styles.buttonContainer}>
-          <PrimaryButton>Reset</PrimaryButton>
+          <PrimaryButton onPress={resetInvalidInputHandler}>
+            Reset
+          </PrimaryButton>
         </View>
+
         <View style={styles.buttonContainer}>
-          <PrimaryButton>Confirm</PrimaryButton>
+          <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
         </View>
       </View>
     </View>
@@ -59,5 +102,4 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
   },
-
 });

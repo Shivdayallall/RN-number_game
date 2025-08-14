@@ -3,7 +3,7 @@ import PrimaryButton from '../components/PrimaryButton';
 
 import { useState } from 'react';
 
-const StartGameScreen = () => {
+const StartGameScreen = ({ onPickedNumber }) => {
   // Declare the state for textinput field
   const [enteredNumber, setEnteredNumber] = useState('');
 
@@ -37,7 +37,7 @@ const StartGameScreen = () => {
       return;
     }
 
-    console.log('valid number');
+    onPickedNumber(userChosenNumber);
   };
 
   return (

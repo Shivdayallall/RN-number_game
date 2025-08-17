@@ -14,14 +14,24 @@ export default function App() {
   // State for game is over screen
   const [gameIsOver, setGameIsOver] = useState();
 
+  // State for keeping track of numbers of round
+  const [guessRounds, setGuessRounds] = useState(0);
+
   //
   const pickedNumberHandler = (pickedNumber) => {
     setUserNumber(pickedNumber);
     setGameIsOver(false);
   };
 
-  const gameOverHandler = () => {
+  const gameOverHandler = (numberOfRounds) => {
     setGameIsOver(true);
+    setGuessRounds(0)
+  };
+
+  // Start new game function
+  const startNewGameHandler = () => {
+    setUserNumber(null);
+    setGuessRounds(0);
   };
 
   let screen = <StartGameScreen onPickedNumber={pickedNumberHandler} />;
@@ -33,7 +43,13 @@ export default function App() {
   }
 
   if (gameIsOver && userNumber) {
-    screen = <GameOverScreen />;
+    screen = (
+      <GameOverScreen
+        userNumber={userNumber}
+        roundsNumber={guessRounds}
+        onStartNewGame={startNewGameHandler}
+      />
+    );
   }
 
   return (
